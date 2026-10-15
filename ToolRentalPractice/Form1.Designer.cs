@@ -2,7 +2,7 @@ namespace ToolRentalPractice
 {
     partial class Form1
     {
-        private System.ComponentModel.IContainer? components = null;
+        private System.ComponentModel.IContainer components = null;
 
         protected override void Dispose(bool disposing)
         {
@@ -24,7 +24,7 @@ namespace ToolRentalPractice
             //
             // pictureBox1
             //
-            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image")!;
+            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
             pictureBox1.Location = new Point(28, 28);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(180, 130);
