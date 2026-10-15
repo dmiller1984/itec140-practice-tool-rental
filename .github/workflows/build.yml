@@ -1,0 +1,30 @@
+name: Build starter and discover checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Build the application and tests
+        run: dotnet build ToolRentalPractice.sln --configuration Release
+      - name: Verify all 23 practice checks are discoverable
+        shell: pwsh
+        run: |
+          $testList = dotnet test TestProject1/TestProject1.csproj --configuration Release --no-build --list-tests
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $testList | Write-Output
+          $markTests = @($testList | Where-Object { $_ -match 'Mark\d{2}_' })
+          if ($markTests.Count -ne 23) { throw "Expected 23 practice checks, found $($markTests.Count)." }
+          "Build passed and all 23 practice checks were discovered." >> $env:GITHUB_STEP_SUMMARY
+          "The starter is intentionally unsolved. Run all tests in Visual Studio to score your attempt." >> $env:GITHUB_STEP_SUMMARY
